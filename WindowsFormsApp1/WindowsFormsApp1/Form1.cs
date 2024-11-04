@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Drawing;
+using System.Reflection;
+using System.Security.Policy;
 using System.Windows.Forms;
 
 namespace WindowsFormsApp1
@@ -9,6 +11,7 @@ namespace WindowsFormsApp1
         private Polyhedron polyhedron;
         private Bitmap bitmap;
         private Graphics graphics;
+
 
         public Form1()
         {
@@ -46,20 +49,49 @@ namespace WindowsFormsApp1
             string selectedShape = comboBox1.SelectedItem.ToString();
             float offsetX = pictureBox1.Width / 2;
             float offsetY = pictureBox1.Height / 2;
+            float size = 100;
 
             switch (selectedShape)
             {
                 case "Куб":
-                    polyhedron.CreateCube(100, offsetX, offsetY);
+                    polyhedron.points.Add(new Point(-size / 2 + offsetX, -size / 2 + offsetY, -size / 2));
+                    polyhedron.points.Add(new Point(size / 2 + offsetX, -size / 2 + offsetY, -size / 2));
+                    polyhedron.points.Add(new Point(size / 2 + offsetX, size / 2 + offsetY, -size / 2));
+                    polyhedron.points.Add(new Point(-size / 2 + offsetX, size / 2 + offsetY, -size / 2));
+                    polyhedron.points.Add(new Point(-size / 2 + offsetX, -size / 2 + offsetY, size / 2));
+                    polyhedron.points.Add(new Point(size / 2 + offsetX, -size / 2 + offsetY, size / 2));
+                    polyhedron.points.Add(new Point(size / 2 + offsetX, size / 2 + offsetY, size / 2));
+                    polyhedron.points.Add(new Point(-size / 2 + offsetX, size / 2 + offsetY, size / 2));
+                    polyhedron.DrawShape(graphics);
                     break;
                 case "Тетраэдр":
-                    polyhedron.CreateCube(50, offsetX, offsetY);
+                    //polyhedron.CreateCube(50, offsetX, offsetY);
                     break;
                 case "Октаэдр":
-                    polyhedron.CreateCube(25, offsetX, offsetY);
+                    //polyhedron.CreateCube(25, offsetX, offsetY);
+                    break;
+                default:
                     break;
             }
 
+            pictureBox1.Invalidate();
+        }
+
+        private void button2_Click(object sender, EventArgs e) // Scale
+        {
+            polyhedron.Scale(0.9f, 0.9f, 0.9f);
+            graphics.Clear(Color.White); // Очистка изображения
+            polyhedron.DrawShape(graphics); // Отрисовка куба
+            graphics.DrawImage(bitmap, 0, 0); // Отображение изображения в PictureBox
+            pictureBox1.Invalidate();
+        }
+
+        private void button3_Click(object sender, EventArgs e) // Rotate
+        {
+            polyhedron.Scale(1.1f, 1.1f, 1.1f);
+            graphics.Clear(Color.White); // Очистка изображения
+            polyhedron.DrawShape(graphics); // Отрисовка куба
+            graphics.DrawImage(bitmap, 0, 0); // Отображение изображения в PictureBox
             pictureBox1.Invalidate();
         }
     }
