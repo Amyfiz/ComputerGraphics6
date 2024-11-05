@@ -97,6 +97,23 @@ namespace WindowsFormsApp1
             return new Point(result[0], result[1], result[2]);
         }
 
+        public static Matrix operator *(Matrix a, Matrix b)
+        {
+            Matrix result = new Matrix();
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    result.Elements[i, j] = 0;
+                    for (int k = 0; k < 4; k++)
+                    {
+                        result.Elements[i, j] += a.Elements[i, k] * b.Elements[k, j];
+                    }
+                }
+            }
+            return result;
+        }
+
         
     }
 }
